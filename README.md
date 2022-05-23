@@ -12,4 +12,4 @@ Portfolio website. Under development.
      (  ' \ '-  |
       \    `.  /
        |      |
-   jgs |      |computer wrote this.
+    jgs|      |
