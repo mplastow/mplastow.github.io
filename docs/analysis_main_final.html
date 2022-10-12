@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matt Plastow">
+
+<title>Matt Plastow - Portfolio - Predicting New York City Home Prices</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Matt Plastow - Portfolio</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./analysis_main_final.html" aria-current="page">NYC Housing Prices</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#statement-of-problem" id="toc-statement-of-problem" class="nav-link" data-scroll-target="#statement-of-problem">Statement of problem</a></li>
+  <li><a href="#summary-of-data" id="toc-summary-of-data" class="nav-link" data-scroll-target="#summary-of-data">Summary of data</a></li>
+  </ul></li>
+  <li><a href="#wrangling-the-data" id="toc-wrangling-the-data" class="nav-link" data-scroll-target="#wrangling-the-data">Wrangling the data</a>
+  <ul class="collapse">
+  <li><a href="#sales-data" id="toc-sales-data" class="nav-link" data-scroll-target="#sales-data">Sales data</a></li>
+  <li><a href="#pluto-data" id="toc-pluto-data" class="nav-link" data-scroll-target="#pluto-data">PLUTO data</a></li>
+  <li><a href="#neighborhood-tabulation-areas" id="toc-neighborhood-tabulation-areas" class="nav-link" data-scroll-target="#neighborhood-tabulation-areas">Neighborhood Tabulation Areas</a></li>
+  <li><a href="#distance-and-count-for-nearby-amenities" id="toc-distance-and-count-for-nearby-amenities" class="nav-link" data-scroll-target="#distance-and-count-for-nearby-amenities">Distance-and-count for nearby amenities</a></li>
+  <li><a href="#distance-to-city-hall" id="toc-distance-to-city-hall" class="nav-link" data-scroll-target="#distance-to-city-hall">Distance to City Hall</a></li>
+  <li><a href="#local-housing-construction" id="toc-local-housing-construction" class="nav-link" data-scroll-target="#local-housing-construction">Local housing construction</a></li>
+  <li><a href="#school-quality" id="toc-school-quality" class="nav-link" data-scroll-target="#school-quality">School quality</a></li>
+  <li><a href="#final-dataset" id="toc-final-dataset" class="nav-link" data-scroll-target="#final-dataset">Final dataset</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory data analysis</a>
+  <ul class="collapse">
+  <li><a href="#distribution-of-prices-by-borough" id="toc-distribution-of-prices-by-borough" class="nav-link" data-scroll-target="#distribution-of-prices-by-borough">Distribution of prices by borough</a></li>
+  <li><a href="#prices-at-the-neighborhood-level" id="toc-prices-at-the-neighborhood-level" class="nav-link" data-scroll-target="#prices-at-the-neighborhood-level">Prices at the neighborhood level</a></li>
+  <li><a href="#price-vs.-the-predictors" id="toc-price-vs.-the-predictors" class="nav-link" data-scroll-target="#price-vs.-the-predictors">Price vs.&nbsp;the predictors</a></li>
+  <li><a href="#correlation-plot" id="toc-correlation-plot" class="nav-link" data-scroll-target="#correlation-plot">Correlation plot</a></li>
+  </ul></li>
+  <li><a href="#building-the-predictive-model" id="toc-building-the-predictive-model" class="nav-link" data-scroll-target="#building-the-predictive-model">Building the predictive model</a>
+  <ul class="collapse">
+  <li><a href="#selecting-one-model-from-several" id="toc-selecting-one-model-from-several" class="nav-link" data-scroll-target="#selecting-one-model-from-several">Selecting one model from several</a></li>
+  <li><a href="#comparing-multiple-models" id="toc-comparing-multiple-models" class="nav-link" data-scroll-target="#comparing-multiple-models">Comparing multiple models</a></li>
+  <li><a href="#tuning-the-selected-model" id="toc-tuning-the-selected-model" class="nav-link" data-scroll-target="#tuning-the-selected-model">Tuning the selected model</a></li>
+  <li><a href="#tuning-results" id="toc-tuning-results" class="nav-link" data-scroll-target="#tuning-results">Tuning results</a></li>
+  <li><a href="#testing-the-tuned-model" id="toc-testing-the-tuned-model" class="nav-link" data-scroll-target="#testing-the-tuned-model">Testing the tuned model</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Predicting New York City Home Prices</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matt Plastow </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>New York City has an unusual housing market compared to most American cities. First, only about one-third of households own their homes<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Second, single-family homes are relatively rare in New York City – only one in eight housing units sold in 2021 were in this category.</p>
+<p>In the most desirable neighborhoods in Manhattan and Brooklyn, single-family homes are mostly rowhomes, like the classic brownstone. In other parts of the city, homes in this category range from beachfront cottages to sprawling mansions. The rarity and diversity of single-family homes makes predicting their prices a challenging task. For companies in the real estate industry, a model that predicts prices accurately can be the difference between profit and going out of business.</p>
+<p>The dataset compiled here incorporates information about each property, its location, and nearby services and amenities. In contrast, the Ames Iowa Housing dataset encountered in educational contexts consists mostly of the details of the home – number of bedrooms and bathrooms, features like basements and driveways, building materials etc.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The location and amenities approach may be more useful in a city as large and geographically diverse as New York City.</p>
+</section>
+<section id="statement-of-problem" class="level3">
+<h3 class="anchored" data-anchor-id="statement-of-problem">Statement of problem</h3>
+<p>The goal of the project is to build a model to predict sale prices of single-family homes in New York City using a combination of location features, areal features, and features of the property. The homes included in the training dataset should be move-in ready and sold on the open market, as those are the kinds of homes for which accurate pricing has the largest potential return for businesses.</p>
+</section>
+<section id="summary-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-data">Summary of data</h3>
+<p>All data are publicly available from <a href="https://opendata.cityofnewyork.us" class="uri">https://opendata.cityofnewyork.us</a>. The data has been sourced and compiled by the author.</p>
+<p>A few important considerations before getting into the data:</p>
+<ol type="1">
+<li><p>All the data used in this project are open data from city agencies, which may be less complete than commercial datasets.</p></li>
+<li><p>A large number of variables were explored for inclusion in the final set, but ultimately rejected. Some variables were relevant to only a small proportion of lots, while others had poor coverage or excessive missing values. Certain variables were highly correlated with the outcome, notably tax assessment data.</p></li>
+<li><p>Screening the homes in the dataset was an important task for this project, and could not be done automatically in R. The screening process is briefly described below.</p></li>
+</ol>
+<section id="variables" class="level4">
+<h4 class="anchored" data-anchor-id="variables">Variables</h4>
+<p><strong>Outcome:</strong> Sale price</p>
+<p><strong>Predictors:</strong></p>
+<ul>
+<li><p>Location:</p>
+<ul>
+<li><p>Borough</p></li>
+<li><p>Latitude and longitude</p></li>
+<li><p>Distance to city hall (used as measure of centrality)</p></li>
+</ul></li>
+<li><p>Property attributes:</p>
+<ul>
+<li><p>Lot area in square feet</p></li>
+<li><p>Residential area in square feet</p></li>
+<li><p>Ratio of lot area to residential area</p></li>
+<li><p>Number of floors</p></li>
+<li><p>Year built</p></li>
+<li><p>Year of last major alteration</p></li>
+<li><p>Property landmarked or in historic district</p></li>
+</ul></li>
+<li><p>Nearby amenities</p>
+<ul>
+<li><p>Distance to nearest…</p>
+<ul>
+<li><p>subway station</p></li>
+<li><p>bike route</p></li>
+<li><p>park</p></li>
+<li><p>Open Street</p></li>
+</ul></li>
+<li><p>Number of each of the above within walking distance</p></li>
+<li><p>Number of new housing units built nearby since 2010</p></li>
+<li><p>School quality ratings for zoned elementary and middle schools</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="wrangling-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="wrangling-the-data">Wrangling the data</h2>
+<p>The first major data component is the NYC Department of Finance data on all property sales for 2021. This data is composed of five Excel spreadsheets, one for each borough.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The spreadsheets have a common structure, so writing a function to import and select columns from them cuts down on redundant code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>read_sales_data <span class="ot">&lt;-</span> <span class="cf">function</span>(path) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Specify path</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> path,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Specify tidy column names</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">c</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"borough_num"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"neighborhood"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">"bldg_class_cat"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">"tax_class_now"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">"block"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"lot"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"easement"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"bldg_class_now"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"address"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">"apt"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>      <span class="st">"zip"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      <span class="st">"res_unit_sale"</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>      <span class="st">"comm_unit_sale"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"total_unit_sale"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"land_sq_ft"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"gross_sq_ft"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">"year_built_sale"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">"tax_class_sale"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">"bldg_class_sale"</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sale_price"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sale_date"</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip header</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">skip =</span> <span class="dv">8</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Filter for single-family home sales...</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>      bldg_class_cat <span class="sc">==</span> <span class="st">"01 ONE FAMILY DWELLINGS"</span> <span class="sc">&amp;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="co"># ...with a single unit sold...</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      total_unit_sale <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sales-data" class="level3">
+<h3 class="anchored" data-anchor-id="sales-data">Sales data</h3>
+<p>After importing all five spreadsheets, we compile the data from all five boroughs into a single table.</p>
+<p>An important next step is to create a Borough-Block-Lot (BBL) identifier for each row by combining the separate elements in the sales data. The BBL system is the city government’s method of uniquely identifying each lot in the entire city. We will use the BBL IDs to compile the data from the various sources that are available.</p>
+<p>Each unique sale is identified with a new column consisting of BBL plus date.</p>
+<section id="errors-in-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="errors-in-the-data">Errors in the data</h4>
+<p>The sales data has several problems. First, there are several types of errors that must be screened for:</p>
+<ul>
+<li>Misclassified lots (condos in multi-unit buildings marked as single-family homes, empty lots classified as homes etc.)</li>
+<li>Missing information</li>
+<li>Inaccurate information</li>
+</ul>
+<p>Sales with these types of errors are excluded.</p>
+<p>Second, there are a small number of houses that do not appear to be in habitable condition, and are sold for far less than market price. These houses were all discovered during the screening process described below, and are also excluded.</p>
+</section>
+<section id="sweetheart-deals-and-transfers" class="level4">
+<h4 class="anchored" data-anchor-id="sweetheart-deals-and-transfers">Sweetheart deals and transfers</h4>
+<p>The third type of problem with the data, and by far the largest, is that there are a large number of sales that are clearly not sold in arms-length sales on the open market. Including these sales in the dataset degrades the predictive power of any model attempting to predict market prices, so they should be excluded.</p>
+<div class="cell">
+
+</div>
+<p>Note the huge number of 0-dollar sales on a histogram of all single-family home prices (below).</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The data clearly contains no-cost transfers and sweetheart deals (homes sold for $5000 or even $10) between family, friends, business entities, and so on.</p>
+</section>
+<section id="filtering-out-non-arms-length-sales" class="level4">
+<h4 class="anchored" data-anchor-id="filtering-out-non-arms-length-sales">Filtering out non-arms-length sales</h4>
+<p>The market-rate prices we are predicting more specifically described as arm’s-length sales – sales where both parties are trying to maximize their advantage in the sale. In real estate, there are a number of different kinds of non-arms-length sales:</p>
+<ul>
+<li><p>Auctions</p></li>
+<li><p>Bank-owned properties</p></li>
+<li><p>Short sales</p></li>
+<li><p>Cash-for-homes services</p></li>
+</ul>
+<p>These sales and others should be excluded from the dataset.</p>
+<p>While it is impossible to positively identify every sale in this category, we can create a filter to identify candidates. To do this, we use data scraped from live listings on Zillow<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> to develop an understanding of what actual market sales look like.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The distribution of single-family homes listed for sale on Zillow looks similar to that of our sales data, though with a “thicker” upper tail.</p>
+<p>The Zillow data allows us to answer two important questions:</p>
+<ol type="1">
+<li><p><em>What is the minimum one can expect to pay for a house anywhere in the city?</em> The sales for $5000 are obviously deals of some kind, but what about $100k sales? Based on the Zillow data, any house sold for under $250,000 is almost certainly not an arm’s-length sale and should be excluded.</p></li>
+<li><p><em>What is the range of prices one can expect to pay for a house in a given neighborhood?</em> Prices are not uniform across the city, so the filter should be responsive to local sub-markets. Based on the Zillow data, for any given neighborhood, houses that are sold for less than 45% of the neighborhood median sale price are likely sales that should be excluded.</p></li>
+</ol>
+<p>We build a filter that catches all homes under $250k and all homes that were sold for less than 45% of the median price in the local area. Two measures of “local area” are used – ZIP code and neighborhood – and produce somewhat different, yet overlapping, sets of results.</p>
+<p>Screening the filter results reveals that a small number of sales that appear to be on-market have been picked up by the filter, but overall the filter is reasonably effective.</p>
+</section>
+<section id="screening-sales-manually" class="level4">
+<h4 class="anchored" data-anchor-id="screening-sales-manually">Screening sales manually</h4>
+<p>It is reasonable to assume that the filter did not catch all homes sold off-market. The next task is to manually screen a portion of the remaining sales by searching for the address on Zillow and other websites. Over time, an intuition of what counts as a non-arms-length sale can be developed. Broadly speaking, homes that have one or more of the following attributes are excluded:</p>
+<ul>
+<li>Listed as an auction, short sale, bank-owned or real-estate-owned property, in foreclosure etc.</li>
+<li>Listed with language indicating a fixer-upper or other problems</li>
+<li>Showing visible signs of deterioration or abandonment</li>
+<li>Sold for substantially under for-sale or recently-sold homes in the area</li>
+<li>Sold for less than a previously-recorded sale</li>
+</ul>
+<p>The screening process is time-intensive, so not every home can be screened. The focus was put on homes under $500k, homes that stood out in some way during data exploration, and homes that were identified as over- or under-predictions at some point during the model building process. Some random screening of homes was done to counter some of the biases inherent in this method of screening. About 1000 sales were screened in this manner, and 450 sales were excluded based on the results.</p>
+</section>
+<section id="capping-the-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="capping-the-distribution">Capping the distribution</h4>
+<p>Another important filter for the data involves excluding homes over a certain price. The statistical reason for doing this is so that ultra-high-end outliers do not exert undue leverage during the modeling process. More conceptually, at some point in the price distribution, homes become out of reach of everyone except the ultra-wealthy, and thus the “market” for these homes is conceptually distinct from the market for homes sold for $500,000 to $1,000,000.</p>
+<p>For this project, the prices will be capped at $10 million, a 40x multiple of the minimum price included. The decision to cap the prices here is ultimately arbitrary and may be higher than is truly useful – the principle of not discarding potentially useful data was important to the choice of where to cap.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The distribution of the screened and filtered sale price variable is similar in shape to both the original data and the Zillow data, meaning no extreme distortions were introduced during the process. An artifact visible in this graph that we can call the “million-dollar shelf” will show up more clearly in later graphs.</p>
+</section>
+</section>
+<section id="pluto-data" class="level3">
+<h3 class="anchored" data-anchor-id="pluto-data">PLUTO data</h3>
+<p>The next step is to import data from PLUTO files. “Primary Land Use Tax Lot Output”<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is the name for publicly available data for each tax lot (identified by a BBL ID) in the city. It contains location data, district data, and features of the buildings on the tax lot, like floor area and the year it was built. All of the features of the properties that were not found in the sales data are found here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pluto_data <span class="ot">&lt;-</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="st">"../data/pluto/Primary_Land_Use_Tax_Lot_Output__PLUTO_.csv"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Guess column type based on more rows than default</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">guess_max =</span> <span class="dv">120000</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bbl <span class="sc">%in%</span> sales_all_boroughs_filter_cap<span class="sc">$</span>bbl) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select columns and create tidy column names</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    borough,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    bbl,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">address_pluto =</span> address,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">ct2010 =</span> <span class="st">`</span><span class="at">census tract 2010</span><span class="st">`</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    cb2010,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">community_dist =</span> <span class="st">`</span><span class="at">community board</span><span class="st">`</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">council_dist =</span> <span class="st">`</span><span class="at">council district</span><span class="st">`</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">res_area =</span> resarea,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_floors =</span> numfloors,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_built_pluto =</span> yearbuilt,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_altered_1 =</span> yearalter1,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_altered_2 =</span> yearalter2,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">historic_dist =</span> histdist,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    landmark,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    longitude</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In addition to variables directly from the data, three more variables are created here:</p>
+<ul>
+<li>Flag for historic properties: the property is a designated landmark or is part of a historic district</li>
+<li>The ratio of lot size to residential area</li>
+<li>Year last altered: the year when the property last had major alterations that change its assessed tax value. If no alterations are recorded, the year built is used instead.</li>
+</ul>
+</section>
+<section id="neighborhood-tabulation-areas" class="level3">
+<h3 class="anchored" data-anchor-id="neighborhood-tabulation-areas">Neighborhood Tabulation Areas</h3>
+<p>Neighborhood Tabulation Areas<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> are defined by the Department of Planning and are roughly equivalent to neighborhoods as commonly understood by city residents and those in the real estate industry. The NTA codes will be used as a short, convenient neighborhood identifier.</p>
+</section>
+<section id="distance-and-count-for-nearby-amenities" class="level3">
+<h3 class="anchored" data-anchor-id="distance-and-count-for-nearby-amenities">Distance-and-count for nearby amenities</h3>
+<p>Two important aspects of nearby amenities are incorporated in this project: the distance to the nearest of the type, and the count of that type of amenity within walking distance. “Walking distance” is variously defined as 400m (1/4 mile) and 800m (1/2 mile), but for this project, we’ll split the difference and define it as 600m.</p>
+<p>To quickly calculate distance-to-nearest and count-in-radius, this function will used.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dist_and_count <span class="ot">&lt;-</span> <span class="cf">function</span>(to_location, count_within_dist_m) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Returns row number of nearest feature to each BBL from nearest_to table</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  nearest_feature <span class="ot">=</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use bbl_sf every time</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    bbl_sf <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_nearest_feature</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> to_location</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  dist_to_loc_tbl <span class="ot">=</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use bbl_sf every time</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    bbl_sf <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find distance to location and round</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">dist_to_loc =</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">st_distance</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> bbl_sf,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> to_location[nearest_feature, ],</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">by_element =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">round</span>()</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a tibble with BBL and corresponding distance</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      bbl,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>      dist_to_loc</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  count_within_dist <span class="ot">&lt;-</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use bbl_sf</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    bbl_sf <span class="sc">|&gt;</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find whether each BBL is within dist_m meters of each object</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_is_within_distance</span>(</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> to_location,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">dist =</span> count_within_dist_m,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">sparse =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sum across each row to find number TRUE for each BBL</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowSums</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert to tibble</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble_col</span>(<span class="at">column_name =</span> <span class="st">"num_within_dist"</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  dist_and_count <span class="ot">&lt;-</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    count_within_dist <span class="sc">|&gt;</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Add BBL IDs</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">bbl =</span> dist_to_loc_tbl<span class="sc">$</span>bbl,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Add distance to nearest</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">dist_to_nearest =</span> dist_to_loc_tbl<span class="sc">$</span>dist_to_loc,</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">.before =</span> num_within_dist</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    dist_and_count <span class="sc">|&gt;</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>      <span class="fu">distinct</span>()</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here are the amenities used in this project.</p>
+<section id="subway-stations7" class="level4">
+<h4 class="anchored" data-anchor-id="subway-stations7">Subway stations<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></h4>
+<p>The subway is vitally important for connecting far-flung neighborhoods to the central areas of the city (and to each other). But large parts of the city have no subway connections, which may lead to lower desirability and thus lower prices. A “subway station” here is defined as a series of parallel platforms that one or more subway services may use. For example, Union Square in Manhattan counts as three stations (4-5-6, L, N-Q-R-W).</p>
+</section>
+<section id="bike-routes8" class="level4">
+<h4 class="anchored" data-anchor-id="bike-routes8">Bike routes<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></h4>
+<p>Bike routes are increasingly important to getting around New York City, with a “bike boom” occurring in 2020. They are attractive amenities, much like the subway. We can expect housing prices near bike routes to be higher on average, increasing with bike route density.</p>
+<p>Bike routes are represented as a series of segments, with roughly one block per segment. The number-within-walking distance represents bike route <em>density</em>, all segments of all routes within 600 meters.</p>
+</section>
+<section id="parks9" class="level4">
+<h4 class="anchored" data-anchor-id="parks9">Parks<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></h4>
+<p>Parks are synonymous with city living, offering public green space for all residents. Good nearby parks may be associated with higher home prices. Park types included here are neighborhood parks, playgrounds, and major parks. Greenstreets features, neighborhood gardens, beaches, and other kinds of minor parks are not included.</p>
+</section>
+<section id="open-streets10" class="level4">
+<h4 class="anchored" data-anchor-id="open-streets10">Open Streets<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></h4>
+<p>Open Streets<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> are a recent innovation in New York City: public streets that have been closed to motor vehicles as a way to increase the public space available to neighborhood residents. Much like parks, nearby Open Streets may be associated with higher home prices. Open Streets include any area designated an open street at any point in 2021.</p>
+</section>
+</section>
+<section id="distance-to-city-hall" class="level3">
+<h3 class="anchored" data-anchor-id="distance-to-city-hall">Distance to City Hall</h3>
+<p>City Hall is a good proxy for the center of the city, even though it is not geographically the center point. It is adjacent to the very wealthy areas of FiDi and Lower Manhattan, and the area has been a center of civic and commercial life for centuries.</p>
+</section>
+<section id="local-housing-construction" class="level3">
+<h3 class="anchored" data-anchor-id="local-housing-construction">Local housing construction</h3>
+<p>Department of Buildings data for completed jobs since 2010.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Completed housing jobs are included since there are two competing popular intuitions: housing construction either drives prices up through gentrification, or drives prices down by increasing the housing supply.</p>
+<p>“Housing jobs” can be new construction and alteration (adding units) and demolition (removing units). The net impact of these jobs is summed for each census tract, a small area that is a collection of adjacent blocks.</p>
+</section>
+<section id="school-quality" class="level3">
+<h3 class="anchored" data-anchor-id="school-quality">School quality</h3>
+<p>School quality is often seen as exerting a strong influence on housing prices, with the intuition being that higher prices are associated with better schools. In NYC, elementary and middle schools each have their own zone systems, while high schools operate on a competitive admissions system similar to colleges. Because high schoolers will only sometimes attend schools near their place of residence, only elementary and middle schools are included in the data.</p>
+<p>The School Quality Guide<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> data is used, specifically the Parental Quality survey data. The survey consists of 6 quality metrics that are averaged to obtain an overall quality score for each school. Then all schools serving a zone have that score averaged. Finally, the zone for each lot is found and the score from that zone assigned to the lot.</p>
+</section>
+<section id="final-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="final-dataset">Final dataset</h3>
+<p>After compiling all the above sources, we have the final dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sfh_prices <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  all_data <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Identifiers</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    sale_id,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    address,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    bbl,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    borough,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    neighborhood,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    nta_code,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Outcome variable</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    sale_price,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predictor variables</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    sale_date,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    land_sq_ft,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    gross_sq_ft,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    lot_to_res_ratio,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    num_floors,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_built =</span> year_built_sale,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    year_last_altered,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    historic,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    dist_to_city_hall,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    dist_to_subway,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    num_subway_600m,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    dist_to_bike_route,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    num_bike_route_600m,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    dist_to_park,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    num_parks_600m,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    dist_to_open_street,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    num_open_streets_600m,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    net_units_tract,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    schools_quality_elem,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    schools_quality_middle</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory data analysis</h2>
+<p>We split the data into training and test sets before exploring it further. Splitting the data at this point prevents data leakage, a phenomenon where decisions are made that bias the model to the data on hand such that it does not generalize well to future data.</p>
+<p>The training set consists of 3/4 of the data, with the remaining 1/4 set aside for testing. The exploratory analysis below is based soley on the training set.</p>
+<div class="cell">
+
+</div>
+<section id="distribution-of-prices-by-borough" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-of-prices-by-borough">Distribution of prices by borough</h3>
+<p>A histogram of sale prices (below) for each borough confirms that Manhattan’s sale prices are higher than other boroughs, but the number of single-family homes sold in Manhattan is very small.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="prices-at-the-neighborhood-level" class="level3">
+<h3 class="anchored" data-anchor-id="prices-at-the-neighborhood-level">Prices at the neighborhood level</h3>
+<p>Neighborhood-level median prices can give us an idea of how prices are distributed across the city at the local level.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bubble graph above shows that there may be two (or more) distinct market segments represented in the data:</p>
+<ol type="1">
+<li><p>a “mainstream” market of neighborhoods with high sales volume and prices under $1 million, located in Queens, Staten Island, The Bronx, and parts of Brooklyn</p></li>
+<li><p>a “high-end” market of neighborhoods with fewer sales and prices over $1 million, located in Manhattan and parts of Brooklyn and Queens</p></li>
+</ol>
+<p>The segments are shown by the larger bubbles in the mainstream market and by the “elbow” in the graph, where the slope changes abruptly around $1 million. While this potential segmentation of the market will not be addressed in this project, it is useful to keep in mind while interpreting the model results.</p>
+</section>
+<section id="price-vs.-the-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="price-vs.-the-predictors">Price vs.&nbsp;the predictors</h3>
+<p>For brevity, just the highlights from the full data exploration and visualization are shown in this section.</p>
+<section id="date-of-sale" class="level4">
+<h4 class="anchored" data-anchor-id="date-of-sale">Date of sale</h4>
+<p>Seasonality is a strong feature of the median sale price. According to national data, prices are lowest in the first and last months of the year, and highest during the summer months.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> This trend is reflected in our data. (The offset of the peak from the summer months to early fall likely coincides with the post-COVID “return to office” around this time.) Note that it is a nonlinear trend, which along with other nonlinear trends will influence the types of models that will be selected in the model building section.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="lot-and-building-area" class="level4">
+<h4 class="anchored" data-anchor-id="lot-and-building-area">Lot and building area</h4>
+<p>As expected, prices increase along with both lot size and the square footage of the building on the lot. The price between price and lot size is basically linear above a certain threshold. But as shown on the graph of price vs.&nbsp;lot size (below left), lots under 2500 sq ft are found across the full range of prices. Presumably, location matters for small lots.</p>
+<p>In contrast, there is a strongly nonlinear relationship between price and residential area. This finding corresponds to another finding (not shown) that homes with more floors tend to sell for higher prices.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="latitude-and-longitude" class="level4">
+<h4 class="anchored" data-anchor-id="latitude-and-longitude">Latitude and longitude</h4>
+<p>While the relationship between price and latitude shows some distinct nonlinearity, the relationship between price and longitude is especially pronounced, with a prominent hump around the middle of the range. This hump presumably represents the more expensive neighborhoods in Manhattan and Brooklyn, while other parts of the city to the east and west have dramatically lower home prices.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="distance-to-city-hall-1" class="level4">
+<h4 class="anchored" data-anchor-id="distance-to-city-hall-1">Distance to City Hall</h4>
+<p>The relationship between price and distance to city hall is highly nonlinear. The “two-phase” shape of this graph is very striking: prices fall quickly as distance increases, but flatline around 10-12 km. The “million-dollar shelf” is very visible here.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="distance-to-nearest-subway" class="level4">
+<h4 class="anchored" data-anchor-id="distance-to-nearest-subway">Distance to nearest subway</h4>
+<p>Of all the variables representing the distance to the nearest amenity, the distance to the subway has the most pronounced and clear relationship to price. This relationship is graphed on an untransformed x-axis and a log-transformed x-axis for comparison. Almost all homes over $2 million are near subway stations, and the trend is for lower prices as distance increases.</p>
+<p>Relationships between price and other distance amenities were similar, but less pronounced. Notably, the relationship between price and distance to parks was basically flat, and the maximum distance was fairly short – NYC parks are be plentiful and well-distributed around the city.</p>
+<p>The relationships between price and the counts of amenities nearby were similar: the more amenities nearby, the higher the price tends to be. Again, parks were the exception: the relationship was flat.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="school-quality-1" class="level4">
+<h4 class="anchored" data-anchor-id="school-quality-1">School quality</h4>
+<p>Visualizing school quality yields both expected and unexpected results. Elementary school quality is positively associated with prices and almost all homes sold for $2 million and over have better elementary schools nearby. But neither of these relationships hold true for middle school quality.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="correlation-plot" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-plot">Correlation plot</h3>
+<p>Correlation plot of all variables. None of the variables are correlated with each other at a level higher than 0.80 (though year built and year last altered are at 0.80). Excessive correlation (which can violate model assumptions and lead to poor results) will not be an issue in the modeling process.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="building-the-predictive-model" class="level2">
+<h2 class="anchored" data-anchor-id="building-the-predictive-model">Building the predictive model</h2>
+<p>We will use the tidymodels framework for building and tuning the model. Tidymodels uses similar principles to the tidyverse to provide standard interfaces across many different model types. It uses an integrated workflow for all parts of the modeling process, from data preprocessing to tuning models to fitting the final model.</p>
+<section id="selecting-one-model-from-several" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-one-model-from-several">Selecting one model from several</h3>
+<p>The nonlinear relationships uncovered in exploratory data analysis indicate that models that capture nonlinear effects will be more suitable for our data. Additionally, given that we have more than a handful of predictors, it is more efficient to use models with automatic feature selection, which will weight variables by relevance or importance during model training. This capability will avoid the need to manually specify predictors in the model recipe.</p>
+<p>We will compare the performance of these four models in order to select one for tuning.</p>
+<ul>
+<li><p>Linear model: An ordinary least squares model, included to compare to the other models and not as a candidate.</p></li>
+<li><p>MARS model: A regression model that captures nonlinear relationships using spline features.</p></li>
+<li><p>Boosted trees with xgboost: A random forest that learns from the performance of previous trees.</p></li>
+<li><p>Rules-based model with cubist: A model that uses ensembles of rules derived from “flattened” trees.</p></li>
+</ul>
+<section id="specifying-the-models" class="level4">
+<h4 class="anchored" data-anchor-id="specifying-the-models">Specifying the models</h4>
+<p>All the models are initially specified to use the default settings for their engines, rather than having settings manually specified or determined with tuning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LM model spec</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># MARS model spec</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>earth_spec <span class="ot">&lt;-</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mars</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"earth"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Boosted tree model spec</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>xgboost_spec <span class="ot">&lt;-</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boost_tree</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Cubist model spec</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>cubist_spec <span class="ot">&lt;-</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cubist_rules</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"Cubist"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="writing-a-recipe-for-preprocessing" class="level4">
+<h4 class="anchored" data-anchor-id="writing-a-recipe-for-preprocessing">Writing a recipe for preprocessing</h4>
+<p>In tidymodels, preprocessing the data is done by writing “recipes”. All models can use the same recipe, as none of them have mutually-exclusive requirements for preprocessing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>base_recipe <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Specify the basic recipe</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> sale_price <span class="sc">~</span> .,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> sfh_prices_train</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Change variable roles to identifier, rather than predictors</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_role</span>(<span class="fu">c</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    sale_id,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    address,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    bbl,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    neighborhood,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    nta_code</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">new_role =</span> <span class="st">"identifier"</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert the borough variable to a factor</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_string2factor</span>(<span class="fu">all_of</span>(<span class="st">"borough"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert sale dates into week-of-year</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_date</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">one_of</span>(<span class="st">"sale_date"</span>),</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">features =</span> <span class="st">"week"</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">keep_original_cols =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert the historic district indicator into an explicit numeric</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_mutate</span>(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">historic =</span> <span class="fu">as.numeric</span>(historic)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Impute any missing values</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create dummy variables for the borough variable, using one-hot encoding</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(), <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Zero-variance filter</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Correlation filter</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_corr</span>(</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_predictors</span>(),</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="fl">0.9</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalize (center and scale) all predictors</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="defining-a-cross-validation-scheme" class="level4">
+<h4 class="anchored" data-anchor-id="defining-a-cross-validation-scheme">Defining a cross-validation scheme</h4>
+<p>Overfitting to the training set can be mitigated by using a resampling scheme to repeatedly test models generated during the training process. Ten-fold cross-validation, used here, splits the data randomly into ten subsets and holds one in reserve to validate the model fitted on the other nine. Cross-validation is repeated 10 times, holding each subset in reserve once in turn. The performance statistics generated during each round of cross-validation are averaged to produce a final metric for evaluating the model.</p>
+</section>
+</section>
+<section id="comparing-multiple-models" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-multiple-models">Comparing multiple models</h3>
+<p>All three nonlinear models substantially outperformed the linear model. The MARS model underperformed the others by a small margin, while the Cubist and boosted tree models were very close in both RMSE and R-squared.</p>
+<p>The Cubist model will be selected for tuning, as it has a slight edge over the boosted tree model in consistency (i.e., smaller standard error), though either model would work here.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  model        .metric       mean    std_err
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+1 linear_reg   rmse    373563.    13664.    
+2 linear_reg   rsq          0.709     0.0180
+3 mars         rmse    308800.    14761.    
+4 mars         rsq          0.799     0.0198
+5 boost_tree   rmse    276004.    13874.    
+6 boost_tree   rsq          0.840     0.0180
+7 cubist_rules rmse    279250.    10639.    
+8 cubist_rules rsq          0.839     0.0130</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-80-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="tuning-the-selected-model" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-the-selected-model">Tuning the selected model</h3>
+<p>The Cubist model will be trained with 10 sets of these two parameters:</p>
+<ul>
+<li><p>Number of committees: the number of iterations allowed for formulating and adjusting the rules</p></li>
+<li><p>Number of neighbors: the number of nearby points used for adjusting the predictions produced by the model</p></li>
+</ul>
+<p>The parameter sets are generated using a random grid search method.</p>
+</section>
+<section id="tuning-results" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-results">Tuning results</h3>
+<p>The tuning results show that all candidate parameter sets outperformed the untuned model, some by about as 15%.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   model        .metric    mean     n std_err
+   &lt;chr&gt;        &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+ 1 cubist_rules rmse    244672.    10   7705.
+ 2 cubist_rules rmse    244971.    10   6963.
+ 3 cubist_rules rmse    245265.    10   7546.
+ 4 cubist_rules rmse    245285.    10   7327.
+ 5 cubist_rules rmse    245903.    10   7666.
+ 6 cubist_rules rmse    249281.    10   6899.
+ 7 cubist_rules rmse    252045.    10   6317.
+ 8 cubist_rules rmse    253730.    10   9640.
+ 9 cubist_rules rmse    256380.    10   9190.
+10 cubist_rules rmse    269865.    10   6236.</code></pre>
+</div>
+</div>
+<p>We select a model with an algorithm that favors a less complex model (in this case, fewer committees), allowing a performance loss of up to than 2% compared the best-performing model. The principle here is that a less complex model has a better chance of generalizing to the test set.</p>
+<p>The model selected by this process has the following parameters:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 8
+  committees neighbors .metric .estimator    mean std_err   .best .loss
+       &lt;int&gt;     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+1         22         3 rmse    standard   249281.   6899. 244672.  1.88</code></pre>
+</div>
+</div>
+<p>Note that the selected Cubist model performs substantially better than the untuned model, and has only 0.76% performance loss compared to the best candidate model produced by tuning.</p>
+<p>Here are the selected model’s performance metrics:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  model        .metric       mean    std_err
+  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+1 cubist_rules rmse    249281.    6899.     
+2 cubist_rules rsq          0.871    0.00955</code></pre>
+</div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="testing-the-tuned-model" class="level3">
+<h3 class="anchored" data-anchor-id="testing-the-tuned-model">Testing the tuned model</h3>
+<p>The last step is to fit the selected model to the test set. The metrics for the test fit show that the model’s performance is comparable to the best model trained on the training set.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  .metric .estimator  .estimate .config             
+  &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard   259372.    Preprocessor1_Model1
+2 mae     standard   122738.    Preprocessor1_Model1
+3 rsq     standard        0.857 Preprocessor1_Model1</code></pre>
+</div>
+</div>
+<section id="variable-importance" class="level4">
+<h4 class="anchored" data-anchor-id="variable-importance">Variable importance</h4>
+<p>Based on the variable importance plot for the fitted model, location (both absolute and in relationship to city hall), building and lot area, are the most important variables. This finding makes intuitive sense, as location and size of homes are the most heavily-promoted details in real estate listings. Of all the measures of nearby amenities, distance to the nearest subway station is the most important.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-95-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-98-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="predictions-and-residuals" class="level4">
+<h4 class="anchored" data-anchor-id="predictions-and-residuals">Predictions and residuals</h4>
+<p>The predicted-actual plot (left) shows that the fitted model has a slight bias toward overpredict prices throughout the distribution, though the relationship is generally linear and compact. Further rounds of modeling could resolve this issue.</p>
+<p>The prediction-residual plot (right) shows that, as expected, the residuals tend to increase in magnitude as prices increase. The distribution in the “mainstream” segment identified during visualization (under $1 million) is compact and symmetrical, while the distribution in the “high-end” segment is much more diffuse and has notable outliers. The divergence between the median prediction and the upper range may be an indicator that there are latent “rules” for the high-end housing market that do not match the median market.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="analysis_main_final_files/figure-html/unnamed-chunk-100-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="performance-across-the-price-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="performance-across-the-price-distribution">Performance across the price distribution</h4>
+<p>The graph on the left shows the ratio of residuals to actual prices. Ideally, the points on this graph would be distributed symmetrically around the x-axis (dotted blue line) and have a trend line (red) with a slope of 0. The graph shows that the distribution is asymmetrical with respect to the x-axis, and in fact tends to under-predict prices overall. The non-zero slope of the trend line indicates that the model goes from under-predicting in the low end of the price distribution to over-predicting in the high end.</p>
+<p>The graph on the right is the absolute-value version of the graph on the left. The mean absolute residual (deviation from perfect prediction) is show by the blue line, and the red trend line shows that the model tends to be less accurate as prices increase. The model clearly has some systematic bias in its predictions that could be accounted for in the future.</p>
+</section>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>The predictions from this model are reasonably good. Considering the range of prices included in the model, an RMSE of $259k and a mean absolute error of $122k are reasonable. The model performs especially well in the most dense regions of the dataset, with properties from $400k to $1.5 million.</p>
+<p>Predicting home prices from a combination of property attributes and location and area attributes has been shown to be a reasonably good method. The nearby amenities have not contributed much individually to the model, with the location and home size predictors being far more important. But the importance plot shows that they do collectively contribute to better performance. Refining this approach will likely yield useful results.</p>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
+<p>Recommendations for the next steps in developing this model:</p>
+<ul>
+<li><p>Expand the dataset by incorporating more variables from commercial datasets and other open sources.</p></li>
+<li><p>Assess whether dividing the full range of sale prices into multiple market segments and creating models for each segment produces better results.</p></li>
+<li><p>Create standardized methods for removing homes sold under market value from the dataset.</p></li>
+<li><p>Iterate on the model building process to improve performance, tune other models besides the Cubist model, and use more intensive tuning methods to find any potential better-performing models.</p></li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.census.gov/quickfacts/newyorkcitynewyork" class="uri">https://www.census.gov/quickfacts/newyorkcitynewyork</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This information is not currently available in NYC open data, but may be available in commercial datasets.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>“Detailed Annual Sales Reports by Borough - 2021 New York City Sales Data” &lt;https://www1.nyc.gov/site/finance/taxes/property-annualized-sales-update.page&gt; “All Sales From January 2021- December 2021. Property Tax System (PTS) data as of 03/11/2022.” Retrieved July 14 2022<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://www.kaggle.com/datasets/ericpierce/new-york-housing-zillow-api" class="uri">https://www.kaggle.com/datasets/ericpierce/new-york-housing-zillow-api</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Primary Land Use Tax Lot Output (PLUTO) 22v1 Data Last Updated June 9, 2022 <a href="https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks" class="uri">https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks</a> Retrieved July 13, 2022<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>“2010 Neighborhood Tabulation Areas (NTAs)”. Last updated 16 Aug 2022. <a href="https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq" class="uri">https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq</a> Accessed 01 Sep 2022<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Subway Stations <a href="https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49" class="uri">https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49</a> Retrieved July 13 2022<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>New York City Bike Routes Last updated Jun 1, 2022 <a href="https://data.cityofnewyork.us/Transportation/New-York-City-Bike-Routes/7vsa-caz7" class="uri">https://data.cityofnewyork.us/Transportation/New-York-City-Bike-Routes/7vsa-caz7</a> Retrieved July 13, 2022<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Park Properties <a href="https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve" class="uri">https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve</a> Retrieved July 13 2022<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Open Streets Locations <a href="https://data.cityofnewyork.us/Health/Open-Streets-Locations/uiay-nctu" class="uri">https://data.cityofnewyork.us/Health/Open-Streets-Locations/uiay-nctu</a> Retrieved July 13 2022<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p><a href="https://www1.nyc.gov/html/dot/html/pedestrians/openstreets.shtml" class="uri">https://www1.nyc.gov/html/dot/html/pedestrians/openstreets.shtml</a><a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Housing Database Last updated May 9, 2022 <a href="https://data.cityofnewyork.us/Housing-Development/Housing-Database/6umk-irkx" class="uri">https://data.cityofnewyork.us/Housing-Development/Housing-Database/6umk-irkx</a> Retrieved July 5, 2022 (should use <a href="https://data.cityofnewyork.us/Housing-Development/Housing-Database-by-Census-Tract/nahe-je7c" class="uri">https://data.cityofnewyork.us/Housing-Development/Housing-Database-by-Census-Tract/nahe-je7c</a>)<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Retrieved July 28, 2022<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p><a href="https://www.nar.realtor/blogs/economists-outlook/seasonality-in-the-housing-market" class="uri">https://www.nar.realtor/blogs/economists-outlook/seasonality-in-the-housing-market</a><a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
