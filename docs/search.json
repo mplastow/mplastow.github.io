@@ -51,9 +51,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "nyc_housing_site",
+    "title": "Welcome to my portfolio!",
     "section": "",
-    "text": "To learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "The nav bar above will take you where you want to go."
   },
   {
     "objectID": "leaflet_maps_sfh_2021.html",
@@ -79,9 +79,9 @@
   {
     "objectID": "leaflet_maps_condos_2021.html",
     "href": "leaflet_maps_condos_2021.html",
-    "title": "Maps: Cooperative apartment sales in 2021",
+    "title": "Maps: Condominium sales in 2021",
     "section": "",
-    "text": "pluto_data <-\n  read_csv(\n    file = \"../data/pluto/Primary_Land_Use_Tax_Lot_Output__PLUTO_.csv\",\n    # Guess column type based on more rows than default\n    guess_max = 120000\n  ) |>\n  filter(address %in% sales_all_boroughs_filter$bldg_address) |>\n  # Select columns and create tidy column names\n  select(\n    borough,\n    bbl,\n    address_pluto = address,\n    ct2010 = `census tract 2010`,\n    cb2010,\n    community_dist = `community board`,\n    council_dist = `council district`,\n    res_area = resarea,\n    num_floors = numfloors,\n    year_built_pluto = yearbuilt,\n    year_altered_1 = yearalter1,\n    year_altered_2 = yearalter2,\n    historic_dist = histdist,\n    landmark,\n    latitude,\n    longitude\n  )\n\n\nall_data <- sales_all_boroughs_pluto\n\n\nSales by neighborhood\n\n\n\n\n\n\n\n\nSales by census tract\n\n\n\n\n\n\n\n# Individual sales\n\npoint_map_data <-\n  all_data |>\n  # Most recent sales first\n  arrange(\n    sale_date |>\n      desc()\n  ) |>\n  # Preserve only one sale per BBL\n  # arrange() call above preserves most recent\n  distinct(\n    bbl,\n    .keep_all = TRUE\n  )\n\npoint_map_data <-\n  point_map_data |>\n  mutate(\n    # Create legible neighborhood names\n    address_title = \n      str_to_title(address),\n    # Create legible neighborhood names\n    neighborhood_title = \n      str_to_title(neighborhood),\n    # Format sale prices to readable style\n    sale_price_dollar =\n      sale_price |>\n      scales::dollar(),\n    # Create label\n    label = \n      str_c(\n        \"<p> <b>\",\n        address_title,\n        \"</b> </br>\",\n        \"Neighborhood:\",\n        neighborhood_title,\n        \"</br>\",\n        \"Sale price:\",\n        sale_price_dollar,\n        \"</p>\",\n        sep = \" \"\n      )\n  )\n\n\n# Leaflet map of all sales\n\nleaflet(\n    point_map_data,\n    width = 1280,\n    height = 720\n  ) |>\n  addProviderTiles(\n    providers$Stamen.Toner,\n    options = \n    tileOptions(\n      minZoom = 10, # furthest\n      maxZoom = 18 # closest\n    )\n  ) |>\n  addCircles(\n    ~longitude,\n    ~latitude,\n    color =\n      ~colorBin(\n        palette = \"viridis\",\n        log(sale_price)\n      )(log(sale_price)),\n    weight = 5,\n    opacity = 1.0,\n    popup = ~label\n  )"
+    "text": "Sales by census tract"
   },
   {
     "objectID": "leaflet_maps_coops_2021.html",
