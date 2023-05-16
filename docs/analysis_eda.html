@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matt Plastow">
+
+<title>Matt Plastow - Portfolio - Exploratory data analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Matt Plastow - Portfolio</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./analysis_summary.html" aria-current="page">Predicting NYC Home Prices</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./leaflet_maps_sfh_2021.html">Mapping NYC Home Prices</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Exploratory data analysis</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_summary.html" class="sidebar-item-text sidebar-link">Summary</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_wrangling1.html" class="sidebar-item-text sidebar-link">Wrangling the sales data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_wrangling2.html" class="sidebar-item-text sidebar-link">Wrangling the other data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_eda.html" class="sidebar-item-text sidebar-link active">Exploratory data analysis</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_model.html" class="sidebar-item-text sidebar-link">Building the predictive model</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis_outro.html" class="sidebar-item-text sidebar-link">Discussion and next steps</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#splitting-the-data" id="toc-splitting-the-data" class="nav-link active" data-scroll-target="#splitting-the-data">Splitting the data</a></li>
+  <li><a href="#distribution-of-prices-by-borough" id="toc-distribution-of-prices-by-borough" class="nav-link" data-scroll-target="#distribution-of-prices-by-borough">Distribution of prices by borough</a></li>
+  <li><a href="#prices-at-the-neighborhood-level" id="toc-prices-at-the-neighborhood-level" class="nav-link" data-scroll-target="#prices-at-the-neighborhood-level">Prices at the neighborhood level</a></li>
+  <li><a href="#price-vs.-the-predictors" id="toc-price-vs.-the-predictors" class="nav-link" data-scroll-target="#price-vs.-the-predictors">Price vs.&nbsp;the predictors</a>
+  <ul class="collapse">
+  <li><a href="#date-of-sale" id="toc-date-of-sale" class="nav-link" data-scroll-target="#date-of-sale">Date of sale</a></li>
+  <li><a href="#lot-and-building-area" id="toc-lot-and-building-area" class="nav-link" data-scroll-target="#lot-and-building-area">Lot and building area</a></li>
+  <li><a href="#latitude-and-longitude" id="toc-latitude-and-longitude" class="nav-link" data-scroll-target="#latitude-and-longitude">Latitude and longitude</a></li>
+  <li><a href="#distance-to-city-hall" id="toc-distance-to-city-hall" class="nav-link" data-scroll-target="#distance-to-city-hall">Distance to City Hall</a></li>
+  <li><a href="#distance-to-nearest-subway" id="toc-distance-to-nearest-subway" class="nav-link" data-scroll-target="#distance-to-nearest-subway">Distance to nearest subway</a></li>
+  <li><a href="#school-quality" id="toc-school-quality" class="nav-link" data-scroll-target="#school-quality">School quality</a></li>
+  </ul></li>
+  <li><a href="#correlation-plot" id="toc-correlation-plot" class="nav-link" data-scroll-target="#correlation-plot">Correlation plot</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Exploratory data analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matt Plastow </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="splitting-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="splitting-the-data">Splitting the data</h2>
+<p>We split the data into training and test sets before exploring it further. Splitting the data at this point prevents data leakage, a phenomenon where decisions are made that bias the model to the data on hand such that it does not generalize well to future data.</p>
+<p>The training set consists of 3/4 of the data, with the remaining 1/4 set aside for testing. The exploratory analysis below is based soley on the training set.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-3_7ced148b03f6c0b20d2c6f22b447ce8c">
+
+</div>
+</section>
+<section id="distribution-of-prices-by-borough" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-of-prices-by-borough">Distribution of prices by borough</h2>
+<p>A histogram of sale prices (below) for each borough confirms that Manhattan’s sale prices are higher than other boroughs, but the number of single-family homes sold in Manhattan is very small.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-4_71d0cc51771f5b913f48d3eeb838b96b">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="prices-at-the-neighborhood-level" class="level2">
+<h2 class="anchored" data-anchor-id="prices-at-the-neighborhood-level">Prices at the neighborhood level</h2>
+<p>Neighborhood-level median prices can give us an idea of how prices are distributed across the city at the local level.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-5_889bfa4a4d9243e06c19970d95a66164">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bubble graph above shows that there may be two (or more) distinct market segments represented in the data:</p>
+<ol type="1">
+<li><p>a “mainstream” market of neighborhoods with high sales volume and prices under $1 million, located in Queens, Staten Island, The Bronx, and parts of Brooklyn</p></li>
+<li><p>a “high-end” market of neighborhoods with fewer sales and prices over $1 million, located in Manhattan and parts of Brooklyn and Queens</p></li>
+</ol>
+<p>The segments are shown by the larger bubbles in the mainstream market and by the “elbow” in the graph, where the slope changes abruptly around $1 million. While this potential segmentation of the market will not be addressed in this project, it is useful to keep in mind while interpreting the model results.</p>
+</section>
+<section id="price-vs.-the-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="price-vs.-the-predictors">Price vs.&nbsp;the predictors</h2>
+<p>For brevity, just the highlights from the full data exploration and visualization are shown in this section.</p>
+<section id="date-of-sale" class="level3">
+<h3 class="anchored" data-anchor-id="date-of-sale">Date of sale</h3>
+<p>Seasonality is a strong feature of the median sale price. According to national data, prices are lowest in the first and last months of the year, and highest during the summer months.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This trend is reflected in our data. (The offset of the peak from the summer months to early fall likely coincides with the post-COVID “return to office” around this time.) Note that it is a nonlinear trend, which along with other nonlinear trends will influence the types of models that will be selected in the model building section.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-6_29566838bab5cd3d47040dc8d2a1ddef">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-7_a839e5908d5bc0890b5fe99f16985ecd">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="lot-and-building-area" class="level3">
+<h3 class="anchored" data-anchor-id="lot-and-building-area">Lot and building area</h3>
+<p>As expected, prices increase along with both lot size and the square footage of the building on the lot. The price between price and lot size is basically linear above a certain threshold. But as shown on the graph of price vs.&nbsp;lot size (below left), lots under 2500 sq ft are found across the full range of prices. Presumably, location matters for small lots.</p>
+<p>In contrast, there is a strongly nonlinear relationship between price and residential area. This finding corresponds to another finding (not shown) that homes with more floors tend to sell for higher prices.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-8_ea85003674eb7de5eb080c55cc74db6e">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-9_981c7b0a954cd644dc91324694fc5096">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="latitude-and-longitude" class="level3">
+<h3 class="anchored" data-anchor-id="latitude-and-longitude">Latitude and longitude</h3>
+<p>While the relationship between price and latitude shows some distinct nonlinearity, the relationship between price and longitude is especially pronounced, with a prominent hump around the middle of the range. This hump presumably represents the more expensive neighborhoods in Manhattan and Brooklyn, while other parts of the city to the east and west have dramatically lower home prices.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-10_2a7a60e6a6768e725bacb56d054a0fc4">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-11_d7c019a135b10778b62bc69f5700bf05">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="distance-to-city-hall" class="level3">
+<h3 class="anchored" data-anchor-id="distance-to-city-hall">Distance to City Hall</h3>
+<p>The relationship between price and distance to city hall is highly nonlinear. The shape of this graph is very striking: prices fall quickly as distance increases, but level off around 10-12 km. A “shelf” at a sale price of $1,000,000 is visible here. The number of homes above that sale price is 2,054, while the number at or below that sale price is 10,763.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-12_cd5e919582432c472007c7dd85879d78">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="distance-to-nearest-subway" class="level3">
+<h3 class="anchored" data-anchor-id="distance-to-nearest-subway">Distance to nearest subway</h3>
+<p>Of all the variables representing the distance to the nearest amenity, the distance to the subway has the most pronounced and clear relationship to price. This relationship is graphed on an untransformed x-axis and a log-transformed x-axis for comparison. Almost all homes over $2 million are near subway stations, and the trend is for lower prices as distance increases.</p>
+<p>Relationships between price and other distance amenities were similar, but less pronounced. Notably, the relationship between price and distance to parks was basically flat, and the maximum distance was fairly short – NYC parks are be plentiful and well-distributed around the city.</p>
+<p>The relationships between price and the counts of amenities nearby were similar: the more amenities nearby, the higher the price tends to be. Again, parks were the exception: the relationship was flat.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-13_ce640943230113b7392df7b9236ee7a5">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-14_9cf9b61dd772d2fd55ef0e798d50f792">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="school-quality" class="level3">
+<h3 class="anchored" data-anchor-id="school-quality">School quality</h3>
+<p>Visualizing school quality yields both expected and unexpected results. Elementary school quality is positively associated with prices and almost all homes sold for $2 million and over have better elementary schools nearby. But neither of these relationships hold true for middle school quality.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-15_4147a908d0761b95154dbc8d765be89c">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-16_13109579f9bafe870c67e611bf1f6f5f">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="correlation-plot" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-plot">Correlation plot</h2>
+<p>Correlation plot of all variables. None of the variables are correlated with each other at a level higher than 0.80 (though year built and year last altered are at 0.80). Excessive correlation (which can violate model assumptions and lead to poor results) will not be an issue in the modeling process.</p>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-17_846cecc6fa097bbcafbb34f00c3743eb">
+
+</div>
+<div class="cell" data-hash="analysis_eda_cache/html/unnamed-chunk-18_69c984c61698fb0bbf2f56885e01e61a">
+<div class="cell-output-display">
+<p><img src="analysis_eda_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.nar.realtor/blogs/economists-outlook/seasonality-in-the-housing-market" class="uri">https://www.nar.realtor/blogs/economists-outlook/seasonality-in-the-housing-market</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022-23 Matt Plastow</div>
+  </div>
+</footer>
+
+
+
+</body></html>
